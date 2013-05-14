@@ -1,4 +1,4 @@
-package com.tamas_eisenberger.ReScan;
+package hu.iwstudio.ReScan;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 
 public class ReScanMain extends Activity {
 	
