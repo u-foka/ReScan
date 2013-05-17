@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.Translucent.NoTitleBar" parent="android:Theme.Holo">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -8,7 +9,7 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
-    
-    <style parent="Theme.Translucent.NoTitleBar" name="ThemeSelector"></style>
-    
+
+    <style parent="Theme.Translucent.NoTitleBar" name="ThemeSelector"/>
+
 </resources>

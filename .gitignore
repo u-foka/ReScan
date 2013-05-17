@@ -1,3 +1,5 @@
 /bin
 /gen
-/publishing
+/out
+/publishing/*.apk
+.idea/workspace.xml
