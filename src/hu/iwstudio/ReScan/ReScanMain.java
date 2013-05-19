@@ -20,20 +20,22 @@ public class ReScanMain extends Activity {
         super.onCreate(savedInstanceState);
         Resources res = getResources();
 
+        startService(new Intent(this, ReScanService.class));
+
         mDialog = ProgressDialog.show(this, res.getString(R.string.app_name),
-                res.getString(R.string.dialog_text), true);
+                res.getString(R.string.scanning_text), true);
 
         IntentFilter finishFilter = new IntentFilter(Intent.ACTION_MEDIA_SCANNER_FINISHED);
         finishFilter.addDataScheme("file");
 
         mFinishReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
+                context.stopService(new Intent(context, ReScanService.class));
                 finish();
             }
         };
 
         registerReceiver(mFinishReceiver, finishFilter);
-
 
         sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
     }
