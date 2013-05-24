@@ -1,5 +1,4 @@
-/bin
-/gen
-/out
 /publishing/*.apk
 .idea/workspace.xml
+.gradle
+build

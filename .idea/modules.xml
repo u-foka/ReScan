@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ReScan.iml" filepath="$PROJECT_DIR$/ReScan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ReScan-ReScan.iml" filepath="$PROJECT_DIR$/ReScan-ReScan.iml" />
     </modules>
   </component>
 </project>
