@@ -38,6 +38,7 @@ android {
         if (type.name != "release") {
             type.packageNameSuffix = ".$type.name"
             type.versionNameSuffix = "-$type.name"
+            type.zipAlign = true
         }
     }
 
