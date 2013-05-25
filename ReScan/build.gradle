@@ -19,4 +19,27 @@ android {
         minSdkVersion 6
         targetSdkVersion 17
     }
+
+    buildTypes {
+        release {
+        }
+
+        debug {
+        }
+
+        debugRelease.initWith(buildTypes.release)
+        debugRelease {
+            debuggable true
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    android.buildTypes.each { type ->
+        if (type.name != "release") {
+            type.packageNameSuffix = ".$type.name"
+            type.versionNameSuffix = "-$type.name"
+        }
+    }
+
+    sourceSets.debugRelease.setRoot("src/release")
 }
