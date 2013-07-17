@@ -20,5 +20,6 @@
 
 <resources>
     <string name="scanning_text">Scanning media…</string>
+    <string name="scanning_finished">Media scanner finished</string>
     <string name="app_name">Re-Scan</string>
 </resources>

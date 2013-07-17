@@ -20,6 +20,7 @@
 package hu.iwstudio.ReScan;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -27,6 +28,9 @@ import android.content.res.Resources;
 import android.os.IBinder;
 
 public class ReScanService extends Service {
+    final static int NOTIFICATION_SCANNING = 101;
+    final static int NOTIFICATION_SCANNING_FINISHED = 102;
+
     public IBinder onBind(Intent intent) {
         return null;
     }
@@ -39,23 +43,31 @@ public class ReScanService extends Service {
                 res.getString(R.string.scanning_text), System.currentTimeMillis());
 
         Intent i = new Intent(this, ReScanMain.class);
-
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
-
         notification.setLatestEventInfo(this, res.getString(R.string.app_name),
                 res.getString(R.string.scanning_text), pi);
 
         notification.flags |= Notification.FLAG_NO_CLEAR;
 
-        startForeground(R.string.scanning_text, notification);
+        startForeground(NOTIFICATION_SCANNING, notification);
 
         return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
+        Resources res = getResources();
+
         stopForeground(true);
+
+        Notification notification = new Notification(android.R.drawable.stat_notify_sync,
+                res.getString(R.string.scanning_finished), System.currentTimeMillis());
+        notification.setLatestEventInfo(this, res.getString(R.string.app_name), res.getString(R.string.scanning_finished), null);
+
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.notify(NOTIFICATION_SCANNING_FINISHED, notification);
+        nm.cancelAll();
     }
 }
