@@ -32,8 +32,8 @@ import android.os.Environment;
 
 public class ReScanMain extends Activity {
 
-    BroadcastReceiver mFinishReceiver;
-    ProgressDialog mDialog;
+    private BroadcastReceiver mFinishReceiver;
+    private ProgressDialog mDialog;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

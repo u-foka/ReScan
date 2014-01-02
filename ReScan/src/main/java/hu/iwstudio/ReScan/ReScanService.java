@@ -28,26 +28,30 @@ import android.content.res.Resources;
 import android.os.IBinder;
 
 public class ReScanService extends Service {
-    final static int NOTIFICATION_SCANNING = 101;
-    final static int NOTIFICATION_SCANNING_FINISHED = 102;
+    public final static int NOTIFICATION_SCANNING = 101;
+    public final static int NOTIFICATION_SCANNING_FINISHED = 102;
+
+    private final Resources mRes;
 
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    public ReScanService() {
+        mRes = getResources();
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Resources res = getResources();
-
         Notification notification = new Notification(android.R.drawable.stat_notify_sync,
-                res.getString(R.string.scanning_text), System.currentTimeMillis());
+                mRes.getString(R.string.scanning_text), System.currentTimeMillis());
 
         Intent i = new Intent(this, ReScanMain.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
-        notification.setLatestEventInfo(this, res.getString(R.string.app_name),
-                res.getString(R.string.scanning_text), pi);
+        notification.setLatestEventInfo(this, mRes.getString(R.string.app_name),
+                mRes.getString(R.string.scanning_text), pi);
 
         notification.flags |= Notification.FLAG_NO_CLEAR;
 
@@ -58,13 +62,11 @@ public class ReScanService extends Service {
 
     @Override
     public void onDestroy() {
-        Resources res = getResources();
-
         stopForeground(true);
 
         Notification notification = new Notification(android.R.drawable.stat_notify_sync,
-                res.getString(R.string.scanning_finished), System.currentTimeMillis());
-        notification.setLatestEventInfo(this, res.getString(R.string.app_name), res.getString(R.string.scanning_finished), null);
+                mRes.getString(R.string.scanning_finished), System.currentTimeMillis());
+        notification.setLatestEventInfo(this, mRes.getString(R.string.app_name), mRes.getString(R.string.scanning_finished), null);
 
         NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         nm.notify(NOTIFICATION_SCANNING_FINISHED, notification);
