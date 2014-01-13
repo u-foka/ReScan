@@ -31,13 +31,15 @@ public class ReScanService extends Service {
     public final static int NOTIFICATION_SCANNING = 101;
     public final static int NOTIFICATION_SCANNING_FINISHED = 102;
 
-    private final Resources mRes;
+    private Resources mRes;
 
     public IBinder onBind(Intent intent) {
         return null;
     }
 
-    public ReScanService() {
+    @Override
+    public void onCreate()
+    {
         mRes = getResources();
     }
 
