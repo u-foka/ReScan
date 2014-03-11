@@ -1,3 +1,5 @@
-/bin
-/gen
-/publishing
+/publishing/*.apk
+.idea/workspace.xml
+.gradle
+build
+local.properties

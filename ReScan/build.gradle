@@ -1,0 +1,38 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.3"
+
+    defaultConfig {
+        minSdkVersion 6
+        targetSdkVersion 19
+    }
+
+    buildTypes {
+        release {
+        }
+
+        debug {
+        }
+
+        debugRelease.initWith(buildTypes.release)
+        debugRelease {
+            debuggable true
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    android.buildTypes.each { type ->
+        if (type.name != "release") {
+            type.packageNameSuffix = ".$type.name"
+            type.versionNameSuffix = "-$type.name"
+            type.zipAlign = true
+        }
+    }
+
+    sourceSets.debugRelease.setRoot("src/release")
+}
+
+dependencies {
+}
