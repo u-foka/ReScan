@@ -21,17 +21,21 @@ package hu.iwstudio.ReScan;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaScannerConnection;
 import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
 public class ReScanMain extends Activity implements MediaScannerConnectionClient {
 
+    private BroadcastReceiver mFinishReceiver;
     private MediaScannerConnection mMediaScanner;
     private ProgressDialog mDialog;
 
@@ -44,8 +48,27 @@ public class ReScanMain extends Activity implements MediaScannerConnectionClient
         mDialog = ProgressDialog.show(this, res.getString(R.string.app_name),
                 res.getString(R.string.scanning_text), true);
 
-        mMediaScanner = new MediaScannerConnection(this, this);
-        mMediaScanner.connect();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            // Users have reported that the new KitKat method does not work in some cases so use the
+            // old method instead for older devices
+
+            IntentFilter finishFilter = new IntentFilter(Intent.ACTION_MEDIA_SCANNER_FINISHED);
+            finishFilter.addDataScheme("file");
+
+            mFinishReceiver = new BroadcastReceiver() {
+                public void onReceive(Context context, Intent intent) {
+                    context.stopService(new Intent(context, ReScanService.class));
+                    finish();
+                }
+            };
+
+            registerReceiver(mFinishReceiver, finishFilter);
+
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+        } else {
+            mMediaScanner = new MediaScannerConnection(this, this);
+            mMediaScanner.connect();
+        }
     }
 
     @Override
@@ -62,7 +85,10 @@ public class ReScanMain extends Activity implements MediaScannerConnectionClient
 
     @Override
     protected void onDestroy() {
-        
+        if (mFinishReceiver != null) {
+            unregisterReceiver(mFinishReceiver);
+        }
+
         super.onDestroy();
     }
 

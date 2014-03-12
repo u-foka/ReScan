@@ -68,7 +68,12 @@ public class ReScanService extends Service {
 
         Notification notification = new Notification(android.R.drawable.stat_notify_sync,
                 mRes.getString(R.string.scanning_finished), System.currentTimeMillis());
-        notification.setLatestEventInfo(this, mRes.getString(R.string.app_name), mRes.getString(R.string.scanning_finished), null);
+
+        Intent i = new Intent(this, ReScanMain.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
+        notification.setLatestEventInfo(this, mRes.getString(R.string.app_name), mRes.getString(R.string.scanning_finished), pi);
 
         NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         nm.notify(NOTIFICATION_SCANNING_FINISHED, notification);
